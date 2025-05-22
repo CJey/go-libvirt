@@ -29,11 +29,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/digitalocean/go-libvirt/internal/constants"
-	"github.com/digitalocean/go-libvirt/internal/event"
-	xdr "github.com/digitalocean/go-libvirt/internal/go-xdr/xdr2"
-	"github.com/digitalocean/go-libvirt/socket"
-	"github.com/digitalocean/go-libvirt/socket/dialers"
+	"github.com/cjey/go-libvirt/internal/constants"
+	"github.com/cjey/go-libvirt/internal/event"
+	xdr "github.com/cjey/go-libvirt/internal/go-xdr/xdr2"
+	"github.com/cjey/go-libvirt/socket"
+	"github.com/cjey/go-libvirt/socket/dialers"
 )
 
 // ErrEventsNotSupported is returned by Events() if event streams
@@ -527,6 +527,7 @@ func (l *Libvirt) LifecycleEvents(ctx context.Context) (<-chan DomainEventLifecy
 
 // Run executes the given QAPI command against a domain's QEMU instance.
 // For a list of available QAPI commands, see:
+//
 //	http://git.qemu.org/?p=qemu.git;a=blob;f=qapi-schema.json;hb=HEAD
 func (l *Libvirt) Run(dom string, cmd []byte) ([]byte, error) {
 	d, err := l.lookup(dom)
@@ -728,7 +729,8 @@ type BlockLimit struct {
 // 'blkdeviotune' command on a VM in virsh.
 //
 // Example usage:
-//  SetBlockIOTune("vm-name", "vda", BlockLimit{libvirt.QEMUBlockIOWriteBytesSec, 1000000})
+//
+//	SetBlockIOTune("vm-name", "vda", BlockLimit{libvirt.QEMUBlockIOWriteBytesSec, 1000000})
 //
 // Deprecated: use DomainSetBlockIOTune instead.
 func (l *Libvirt) SetBlockIOTune(dom string, disk string, limits ...BlockLimit) error {

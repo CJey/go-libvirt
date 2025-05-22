@@ -20,7 +20,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/digitalocean/go-libvirt/internal/go-xdr/xdr2"
+	xdr "github.com/cjey/go-libvirt/internal/go-xdr/xdr2"
 )
 
 // This example demonstrates how to use Marshal to automatically XDR encode

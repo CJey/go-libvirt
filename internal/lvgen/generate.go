@@ -602,11 +602,11 @@ func AddEnumVal(name, val string) error {
 // preceding every function in enum, it looks like this:
 //
 // /**
-//  * @generate: both
-//  * @readstream: 1
-//  * @sparseflag: VIR_STORAGE_VOL_DOWNLOAD_SPARSE_STREAM
-//  * @acl: storage_vol:data_read
-//  */
+//   - @generate: both
+//   - @readstream: 1
+//   - @sparseflag: VIR_STORAGE_VOL_DOWNLOAD_SPARSE_STREAM
+//   - @acl: storage_vol:data_read
+//     */
 //
 // See full description of possible annotations in libvirt's
 // src/remote/remote_protocol.x at the top of remote_procedure enum. We're

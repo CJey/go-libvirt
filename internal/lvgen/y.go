@@ -28,7 +28,7 @@ import __yyfmt__ "fmt"
 //line sunrpc.y:40
 
 import (
-//"fmt"
+// "fmt"
 )
 
 //line sunrpc.y:49

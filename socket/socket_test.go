@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/digitalocean/go-libvirt/internal/constants"
+	"github.com/cjey/go-libvirt/internal/constants"
 )
 
 var testHeader = []byte{
