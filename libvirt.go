@@ -389,13 +389,8 @@ func (l *Libvirt) DomainState(dom string) (DomainState, error) {
 // cancelled. If a problem is encountered setting up the event monitor
 // connection an error will be returned. Errors encountered during streaming
 // will cause the returned event channel to be closed. QEMU domain events.
-func (l *Libvirt) SubscribeQEMUEvents(ctx context.Context, dom string) (<-chan DomainEvent, error) {
-	d, err := l.lookup(dom)
-	if err != nil {
-		return nil, err
-	}
-
-	callbackID, err := l.QEMUConnectDomainMonitorEventRegister([]Domain{d}, nil, 0)
+func (l *Libvirt) SubscribeQEMUEvents(ctx context.Context, dom OptDomain) (<-chan DomainEvent, error) {
+	callbackID, err := l.QEMUConnectDomainMonitorEventRegister(dom, nil, 0)
 	if err != nil {
 		return nil, err
 	}

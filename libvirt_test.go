@@ -386,7 +386,7 @@ func TestEvents(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	stream, err := l.SubscribeQEMUEvents(ctx, "test")
+	stream, err := l.SubscribeQEMUEvents(ctx, nil)
 	if err != nil {
 		t.Error(err)
 	}
