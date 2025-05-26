@@ -1,7 +1,5 @@
 libvirt
 [![GoDoc](http://godoc.org/github.com/cjey/go-libvirt?status.svg)](http://godoc.org/github.com/cjey/go-libvirt)
-[![Build Status](https://github.com/cjey/go-libvirt/actions/workflows/main.yml/badge.svg)](https://github.com/cjey/go-libvirt/actions/)
-[![Report Card](https://goreportcard.com/badge/github.com/cjey/go-libvirt)](https://goreportcard.com/report/github.com/cjey/go-libvirt)
 ====
 
 Package `go-libvirt` provides a pure Go interface for interacting with libvirt.
