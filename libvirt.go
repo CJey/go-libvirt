@@ -177,6 +177,11 @@ func (e *DomainEventCallbackDeviceRemovedMsg) GetCallbackID() int32 {
 }
 
 // GetCallbackID returns the callback ID.
+func (e *DomainEventBlockJob2Msg) GetCallbackID() int32 {
+	return e.CallbackID
+}
+
+// GetCallbackID returns the callback ID.
 func (e *DomainEventCallbackTunableMsg) GetCallbackID() int32 {
 	return e.CallbackID
 }
@@ -208,6 +213,21 @@ func (e *DomainEventCallbackDeviceRemovalFailedMsg) GetCallbackID() int32 {
 
 // GetCallbackID returns the callback ID.
 func (e *DomainEventCallbackMetadataChangeMsg) GetCallbackID() int32 {
+	return e.CallbackID
+}
+
+// GetCallbackID returns the callback ID.
+func (e *DomainEventBlockThresholdMsg) GetCallbackID() int32 {
+	return e.CallbackID
+}
+
+// GetCallbackID returns the callback ID.
+func (e *DomainEventMemoryFailureMsg) GetCallbackID() int32 {
+	return e.CallbackID
+}
+
+// GetCallbackID returns the callback ID.
+func (e *DomainEventMemoryDeviceSizeChangeMsg) GetCallbackID() int32 {
 	return e.CallbackID
 }
 

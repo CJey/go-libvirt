@@ -147,6 +147,8 @@ func eventFromProcedureID(procID uint32) event.Event {
 		return &DomainEventCallbackControlErrorMsg{}
 	case constants.ProcDomainEventCallbackDeviceRemoved:
 		return &DomainEventCallbackDeviceRemovedMsg{}
+	case constants.ProcDomainEventBlockJob2: // legacy
+		return &DomainEventBlockJob2Msg{}
 	case constants.ProcDomainEventCallbackTunable:
 		return &DomainEventCallbackTunableMsg{}
 	case constants.ProcDomainEventCallbackDeviceAdded:
@@ -161,6 +163,12 @@ func eventFromProcedureID(procID uint32) event.Event {
 		return &DomainEventCallbackDeviceRemovalFailedMsg{}
 	case constants.ProcDomainEventCallbackMetadataChange:
 		return &DomainEventCallbackMetadataChangeMsg{}
+	case constants.ProcDomainEventBlockThreshold: // legacy
+		return &DomainEventBlockThresholdMsg{}
+	case constants.ProcDomainEventMemoryFailure: // legacy
+		return &DomainEventMemoryFailureMsg{}
+	case constants.ProcDomainEventMemoryDeviceSizeChange: // legacy
+		return &DomainEventMemoryDeviceSizeChangeMsg{}
 	}
 	return nil
 }
