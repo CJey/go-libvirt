@@ -20,9 +20,9 @@ package libvirt
 
 const (
 	// Deprecated as defined in libvirt/libvirt-common.h:40
-	Deprecated = 0x60e9c0
+	Deprecated = 0x61cee0
 	// ExportVar as defined in libvirt/libvirt-common.h:57
-	ExportVar = 0x60e9c0
+	ExportVar = 0x61cee0
 	// TypedParamFieldLength as defined in libvirt/libvirt-common.h:188
 	TypedParamFieldLength = 80
 	// DomainSchedulerCPUShares as defined in libvirt/libvirt-domain.h:388
@@ -270,7 +270,7 @@ const (
 	// DomainBlockIotuneGroupName as defined in libvirt/libvirt-domain.h:3542
 	DomainBlockIotuneGroupName = "group_name"
 	// KeycodeSetRfb as defined in libvirt/libvirt-domain.h:3638
-	KeycodeSetRfb = 0x60e9c0
+	KeycodeSetRfb = 0x61cee0
 	// DomainSendKeyMaxKeys as defined in libvirt/libvirt-domain.h:3647
 	DomainSendKeyMaxKeys = 16
 	// DomainJobOperationStr as defined in libvirt/libvirt-domain.h:4220
