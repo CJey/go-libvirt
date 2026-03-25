@@ -374,7 +374,7 @@ func (l *Libvirt) getResponse(c chan response) (response, error) {
 }
 
 // encode XDR encodes the provided data.
-func encode(data interface{}) ([]byte, error) {
+func encode(data any) ([]byte, error) {
 	var buf bytes.Buffer
 	_, err := xdr.Marshal(&buf, data)
 
@@ -410,7 +410,7 @@ func decodeError(buf []byte) error {
 }
 
 // eventDecoder decodes an event from a xdr buffer.
-func eventDecoder(buf []byte, e interface{}) error {
+func eventDecoder(buf []byte, e any) error {
 	dec := xdr.NewDecoder(bytes.NewReader(buf))
 	_, err := dec.Decode(e)
 	return err

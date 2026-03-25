@@ -60,7 +60,7 @@ func testExpectedMRet(t *testing.T, name string, n, wantN int, err, wantErr erro
 // TestMarshal ensures the Marshal function works properly with all types.
 func TestMarshal(t *testing.T) {
 	// Variables for various unsupported Marshal types.
-	var nilInterface interface{}
+	var nilInterface any
 	var testChan chan int
 	var testFunc func()
 	var testComplex64 complex64
@@ -68,7 +68,7 @@ func TestMarshal(t *testing.T) {
 
 	// testInterface is used to test Marshal with values nested in an
 	// interface.
-	testInterface := interface{}(17)
+	testInterface := any(17)
 
 	// structMarshalTestIn is input data for the big struct test of all
 	// supported types.
@@ -128,10 +128,10 @@ func TestMarshal(t *testing.T) {
 	}
 
 	tests := []struct {
-		in        interface{} // input value
-		wantBytes []byte      // expected bytes
-		wantN     int         // expected/max number of bytes written
-		err       error       // expected error
+		in        any    // input value
+		wantBytes []byte // expected bytes
+		wantN     int    // expected/max number of bytes written
+		err       error  // expected error
 	}{
 		// interface
 		{testInterface, []byte{0x00, 0x00, 0x00, 0x11}, 4, nil},
@@ -310,7 +310,7 @@ func TestMarshal(t *testing.T) {
 		// Expected errors
 		{nilInterface, []byte{}, 0, &MarshalError{ErrorCode: ErrNilInterface}},
 		{&nilInterface, []byte{}, 0, &MarshalError{ErrorCode: ErrNilInterface}},
-		{(*interface{})(nil), []byte{}, 0, &MarshalError{ErrorCode: ErrBadArguments}},
+		{(*any)(nil), []byte{}, 0, &MarshalError{ErrorCode: ErrBadArguments}},
 		{testChan, []byte{}, 0, &MarshalError{ErrorCode: ErrUnsupportedType}},
 		{&testChan, []byte{}, 0, &MarshalError{ErrorCode: ErrUnsupportedType}},
 		{testFunc, []byte{}, 0, &MarshalError{ErrorCode: ErrUnsupportedType}},
@@ -389,11 +389,11 @@ func (f encodeFunc) String() string {
 // TestEncoder ensures an Encoder works as intended.
 func TestEncoder(t *testing.T) {
 	tests := []struct {
-		f         encodeFunc  // function to use to encode
-		in        interface{} // input value
-		wantBytes []byte      // expected bytes
-		wantN     int         // expected number of bytes written
-		err       error       // expected error
+		f         encodeFunc // function to use to encode
+		in        any        // input value
+		wantBytes []byte     // expected bytes
+		wantN     int        // expected number of bytes written
+		err       error      // expected error
 	}{
 		// Bool
 		{fEncodeBool, false, []byte{0x00, 0x00, 0x00, 0x00}, 4, nil},

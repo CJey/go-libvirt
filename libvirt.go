@@ -455,7 +455,7 @@ func (l *Libvirt) unsubscribeQEMUEvents(stream *event.Stream) error {
 // should wait until the channel is closed to be sure they're collected all the
 // events.
 func (l *Libvirt) SubscribeEvents(ctx context.Context, eventID DomainEventID,
-	dom OptDomain) (<-chan interface{}, error) {
+	dom OptDomain) (<-chan any, error) {
 
 	callbackID, err := l.ConnectDomainEventCallbackRegisterAny(int32(eventID), nil)
 	if err != nil {
@@ -465,7 +465,7 @@ func (l *Libvirt) SubscribeEvents(ctx context.Context, eventID DomainEventID,
 	stream := event.NewStream(constants.QEMUProgram, callbackID)
 	l.addStream(stream)
 
-	ch := make(chan interface{})
+	ch := make(chan any)
 	go func() {
 		ctx, cancel := context.WithCancel(ctx)
 		defer cancel()

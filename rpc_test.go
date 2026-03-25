@@ -361,12 +361,10 @@ func TestSerial(t *testing.T) {
 	l := &Libvirt{}
 
 	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-		go func() {
+	for range 10 {
+		wg.Go(func() {
 			l.serial()
-			wg.Done()
-		}()
+		})
 	}
 
 	wg.Wait()
@@ -453,11 +451,11 @@ func TestRouteDeadlock(t *testing.T) {
 
 	send := func(respCount, evCount int) {
 		// Send the events first
-		for i := 0; i < evCount; i++ {
+		for range evCount {
 			l.Route(eventHeader, testLifeCycle)
 		}
 		// Now send the requests.
-		for i := 0; i < respCount; i++ {
+		for range respCount {
 			l.Route(respHeader, []byte{})
 		}
 	}

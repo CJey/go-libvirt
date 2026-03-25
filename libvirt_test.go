@@ -15,7 +15,6 @@
 package libvirt
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -265,7 +264,7 @@ func TestDomainsWithDeprecatedNew(t *testing.T) {
 	for i, d := range domains {
 		wantID := i + 1
 		if d.ID != int32(wantID) {
-			t.Errorf("expected domain ID %q, got %q", wantID, d.ID)
+			t.Errorf("expected domain ID %v, got %v", wantID, d.ID)
 		}
 
 		wantName := fmt.Sprintf("aaaaaaa-%d", i+1)
@@ -299,7 +298,7 @@ func TestDomains(t *testing.T) {
 	for i, d := range domains {
 		wantID := i + 1
 		if d.ID != int32(wantID) {
-			t.Errorf("expected domain ID %q, got %q", wantID, d.ID)
+			t.Errorf("expected domain ID %v, got %v", wantID, d.ID)
 		}
 
 		wantName := fmt.Sprintf("aaaaaaa-%d", i+1)
@@ -384,8 +383,7 @@ func TestEvents(t *testing.T) {
 
 	done := make(chan error)
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	ctx := t.Context()
 	stream, err := l.SubscribeQEMUEvents(ctx, nil)
 	if err != nil {
 		t.Error(err)

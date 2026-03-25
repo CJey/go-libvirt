@@ -74,14 +74,14 @@ an ErrorCode value for further inspection from sophisticated callers.  Some
 potential issues are unsupported Go types, attempting to decode a value which is
 too large to fit into a specified Go type, and exceeding max slice limitations.
 */
-func Unmarshal(r io.Reader, v interface{}) (int, error) {
+func Unmarshal(r io.Reader, v any) (int, error) {
 	d := Decoder{r: r}
 	return d.Decode(v)
 }
 
 // UnmarshalLimited is identical to Unmarshal but it sets maxReadSize in order
 // to cap reads.
-func UnmarshalLimited(r io.Reader, v interface{}, maxSize uint) (int, error) {
+func UnmarshalLimited(r io.Reader, v any, maxSize uint) (int, error) {
 	d := Decoder{r: r, maxReadSize: maxSize}
 	return d.Decode(v)
 }
@@ -506,7 +506,7 @@ func (d *Decoder) decodeArray(v reflect.Value, ignoreOpaque bool) (int, error) {
 	}
 
 	// Decode each slice element.
-	for i := 0; i < sliceLen; i++ {
+	for i := range sliceLen {
 		n2, err := d.decode(v.Index(i))
 		n += n2
 		if err != nil {
@@ -619,7 +619,7 @@ func (d *Decoder) decodeMap(v reflect.Value) (int, error) {
 	// Decode each key and value according to their type.
 	keyType := vt.Key()
 	elemType := vt.Elem()
-	for i := uint32(0); i < dataLen; i++ {
+	for range dataLen {
 		key := reflect.New(keyType).Elem()
 		n2, err := d.decode(key)
 		n += n2
@@ -842,7 +842,7 @@ func (d *Decoder) decode(v reflect.Value) (int, error) {
 // of indirection.
 func (d *Decoder) indirect(v reflect.Value) (reflect.Value, error) {
 	rv := v
-	for rv.Kind() == reflect.Ptr {
+	for rv.Kind() == reflect.Pointer {
 		// Allocate pointer if needed.
 		isNil := rv.IsNil()
 		if isNil && !rv.CanSet() {
@@ -864,7 +864,7 @@ func (d *Decoder) indirect(v reflect.Value) (reflect.Value, error) {
 // using the reader associated with the Decoder as the source of XDR-encoded
 // data instead of a user-supplied reader.  See the Unmarhsal documentation for
 // specifics.
-func (d *Decoder) Decode(v interface{}) (int, error) {
+func (d *Decoder) Decode(v any) (int, error) {
 	if v == nil {
 		msg := "can't unmarshal to nil interface"
 		return 0, unmarshalError("Unmarshal", ErrNilInterface, msg, nil,
@@ -872,7 +872,7 @@ func (d *Decoder) Decode(v interface{}) (int, error) {
 	}
 
 	vv := reflect.ValueOf(v)
-	if vv.Kind() != reflect.Ptr {
+	if vv.Kind() != reflect.Pointer {
 		msg := fmt.Sprintf("can't unmarshal to non-pointer '%v' - use "+
 			"& operator", vv.Type().String())
 		err := unmarshalError("Unmarshal", ErrBadArguments, msg, nil, nil)

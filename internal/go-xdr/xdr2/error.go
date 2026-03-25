@@ -88,11 +88,11 @@ func (e ErrorCode) String() string {
 // which is too large to fit into a specified Go type, and exceeding max slice
 // limitations.
 type UnmarshalError struct {
-	ErrorCode   ErrorCode   // Describes the kind of error
-	Func        string      // Function name
-	Value       interface{} // Value actually parsed where appropriate
-	Description string      // Human readable description of the issue
-	Err         error       // The underlying error for IO errors
+	ErrorCode   ErrorCode // Describes the kind of error
+	Func        string    // Function name
+	Value       any       // Value actually parsed where appropriate
+	Description string    // Human readable description of the issue
+	Err         error     // The underlying error for IO errors
 }
 
 // Error satisfies the error interface and prints human-readable errors.
@@ -108,7 +108,7 @@ func (e *UnmarshalError) Error() string {
 // unmarshalError creates an error given a set of arguments and will copy byte
 // slices into the Value field since they might otherwise be changed from from
 // the original value.
-func unmarshalError(f string, c ErrorCode, desc string, v interface{}, err error) *UnmarshalError {
+func unmarshalError(f string, c ErrorCode, desc string, v any, err error) *UnmarshalError {
 	e := &UnmarshalError{ErrorCode: c, Func: f, Description: desc, Err: err}
 	switch t := v.(type) {
 	case []byte:
@@ -139,11 +139,11 @@ func IsIO(err error) bool {
 // opaque data than can be represented by a single opaque XDR entry, and
 // exceeding max slice limitations.
 type MarshalError struct {
-	ErrorCode   ErrorCode   // Describes the kind of error
-	Func        string      // Function name
-	Value       interface{} // Value actually parsed where appropriate
-	Description string      // Human readable description of the issue
-	Err         error       // The underlying error for IO errors
+	ErrorCode   ErrorCode // Describes the kind of error
+	Func        string    // Function name
+	Value       any       // Value actually parsed where appropriate
+	Description string    // Human readable description of the issue
+	Err         error     // The underlying error for IO errors
 }
 
 // Error satisfies the error interface and prints human-readable errors.
@@ -162,7 +162,7 @@ func (e *MarshalError) Error() string {
 // marshalError creates an error given a set of arguments and will copy byte
 // slices into the Value field since they might otherwise be changed from from
 // the original value.
-func marshalError(f string, c ErrorCode, desc string, v interface{}, err error) *MarshalError {
+func marshalError(f string, c ErrorCode, desc string, v any, err error) *MarshalError {
 	e := &MarshalError{ErrorCode: c, Func: f, Description: desc, Err: err}
 	switch t := v.(type) {
 	case []byte:

@@ -27,7 +27,7 @@ func TestPktLen(t *testing.T) {
 	}
 
 	if expected != actual {
-		t.Errorf("expected packet length %q, got %q", expected, actual)
+		t.Errorf("expected packet length %v, got %v", expected, actual)
 	}
 }
 
@@ -39,22 +39,22 @@ func TestExtractHeader(t *testing.T) {
 	}
 
 	if h.Program != constants.Program {
-		t.Errorf("expected Program %q, got %q", constants.Program, h.Program)
+		t.Errorf("expected Program %v, got %v", constants.Program, h.Program)
 	}
 
 	if h.Version != constants.ProtocolVersion {
-		t.Errorf("expected version %q, got %q", constants.ProtocolVersion, h.Version)
+		t.Errorf("expected version %v, got %v", constants.ProtocolVersion, h.Version)
 	}
 
 	if h.Procedure != constants.ProcConnectOpen {
-		t.Errorf("expected procedure %q, got %q", constants.ProcConnectOpen, h.Procedure)
+		t.Errorf("expected procedure %v, got %v", constants.ProcConnectOpen, h.Procedure)
 	}
 
 	if h.Type != Call {
-		t.Errorf("expected type %q, got %q", Call, h.Type)
+		t.Errorf("expected type %v, got %v", Call, h.Type)
 	}
 
 	if h.Status != StatusOK {
-		t.Errorf("expected status %q, got %q", StatusOK, h.Status)
+		t.Errorf("expected status %v, got %v", StatusOK, h.Status)
 	}
 }

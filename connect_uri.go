@@ -105,7 +105,7 @@ func dialerForURI(uri *url.URL) (socket.Dialer, error) {
 		}
 		if auth := uri.Query().Get("sshauth"); auth != "" {
 			authMethods := &dialers.SSHAuthMethods{}
-			for _, a := range strings.Split(auth, ",") {
+			for a := range strings.SplitSeq(auth, ",") {
 				switch strings.ToLower(a) {
 				case "agent":
 					authMethods.Agent()

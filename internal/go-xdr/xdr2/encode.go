@@ -72,7 +72,7 @@ further inspection from sophisticated callers.  Some potential issues are
 unsupported Go types, attempting to encode more opaque data than can be
 represented by a single opaque XDR entry, and exceeding max slice limitations.
 */
-func Marshal(w io.Writer, v interface{}) (int, error) {
+func Marshal(w io.Writer, v any) (int, error) {
 	enc := Encoder{w: w}
 	return enc.Encode(v)
 }
@@ -639,7 +639,7 @@ func (enc *Encoder) encode(v reflect.Value) (int, error) {
 // transparent encoding through arbitrary levels of indirection.
 func (enc *Encoder) indirect(v reflect.Value) reflect.Value {
 	rv := v
-	for rv.Kind() == reflect.Ptr {
+	for rv.Kind() == reflect.Pointer {
 		rv = rv.Elem()
 	}
 	return rv
@@ -649,7 +649,7 @@ func (enc *Encoder) indirect(v reflect.Value) reflect.Value {
 // using the writer associated with the Encoder for the destination of the
 // XDR-encoded data instead of a user-supplied writer.  See the Marshal
 // documentation for specifics.
-func (enc *Encoder) Encode(v interface{}) (int, error) {
+func (enc *Encoder) Encode(v any) (int, error) {
 	if v == nil {
 		msg := "can't marshal nil interface"
 		err := marshalError("Marshal", ErrNilInterface, msg, nil, nil)
@@ -658,7 +658,7 @@ func (enc *Encoder) Encode(v interface{}) (int, error) {
 
 	vv := reflect.ValueOf(v)
 	vve := vv
-	for vve.Kind() == reflect.Ptr {
+	for vve.Kind() == reflect.Pointer {
 		if vve.IsNil() {
 			msg := fmt.Sprintf("can't marshal nil pointer '%v'",
 				vv.Type().String())

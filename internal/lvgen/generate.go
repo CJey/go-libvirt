@@ -317,8 +317,8 @@ func procNameTransform(name string) string {
 // returns the <PROGRAM> part, as a camel-cased value. This value will be empty
 // for REMOTE_PROC procedures because we trim REMOTE_, but that's OK.
 func procProgramName(name string) string {
-	ix := strings.Index(name, "PROC_")
-	return constNameTransform(name[:ix])
+	before, _, _ := strings.Cut(name, "PROC_")
+	return constNameTransform(before)
 }
 
 func identifierTransform(name string) string {
@@ -683,13 +683,13 @@ func parseMeta(meta string) (*ProcMeta, error) {
 		ReadStream:  -1,
 		WriteStream: -1,
 	}
-	for _, line := range strings.Split(meta, "\n") {
-		atInd := strings.Index(line, "@")
-		if atInd == -1 {
+	for line := range strings.SplitSeq(meta, "\n") {
+		_, after, ok := strings.Cut(line, "@")
+		if !ok {
 			// Should be only first and last line of comment
 			continue
 		}
-		spl := strings.SplitN(line[atInd+1:], ":", 2)
+		spl := strings.SplitN(after, ":", 2)
 		if len(spl) != 2 {
 			return nil, fmt.Errorf("invalid annotation: %s", meta)
 		}

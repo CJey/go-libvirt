@@ -17,7 +17,7 @@ func (e testEvent) GetCallbackID() int32 {
 func testEvents(count int) []Event {
 	ev := make([]Event, count)
 
-	for i := 0; i < count; i++ {
+	for i := range count {
 		ev[i] = testEvent{int32(i)}
 	}
 
@@ -74,7 +74,7 @@ func TestStreamParallel(t *testing.T) {
 
 	go func() {
 		defer wg.Done()
-		for i := 0; i < evCount; i++ {
+		for i := range evCount {
 			e := <-s.Recv()
 			assert.Equal(t, int32(i), e.GetCallbackID())
 		}

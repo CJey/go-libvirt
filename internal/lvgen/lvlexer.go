@@ -17,7 +17,7 @@ package lvgen
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -95,7 +95,7 @@ type Lexer struct {
 func NewLexer(rdr io.Reader) (*Lexer, error) {
 	l := &Lexer{}
 
-	b, err := ioutil.ReadAll(rdr)
+	b, err := io.ReadAll(rdr)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func (l *Lexer) Error(s string) {
 // errorf is used by the lexer to report errors. It inserts an ERROR token into
 // the items channel, and sets the state to nil, which stops the lexer's state
 // machine.
-func (l *Lexer) errorf(format string, args ...interface{}) stateFn {
+func (l *Lexer) errorf(format string, args ...any) stateFn {
 	l.items <- item{ERROR, fmt.Sprintf(format, args...), l.line, l.column}
 	return nil
 }
@@ -204,8 +204,8 @@ func (l *Lexer) acceptRun(valid string) {
 func procIdent(ident string) bool {
 	// The pattern we're looking for is "<PROGRAM>_PROC_<NAME>", like
 	// "REMOTE_PROC_DOMAIN_OPEN_CONSOLE"
-	if ix := strings.Index(ident, "_PROC_"); ix != -1 {
-		if strings.Index(ident[:ix], "_") == -1 {
+	if before, _, ok := strings.Cut(ident, "_PROC_"); ok {
+		if strings.Index(before, "_") == -1 {
 			return true
 		}
 	}

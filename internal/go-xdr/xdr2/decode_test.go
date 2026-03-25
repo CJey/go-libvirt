@@ -98,7 +98,7 @@ func testExpectedURet(t *testing.T, name string, n, wantN int, err, wantErr erro
 // TestUnmarshal ensures the Unmarshal function works properly with all types.
 func TestUnmarshal(t *testing.T) {
 	// Variables for various unsupported Unmarshal types.
-	var nilInterface interface{}
+	var nilInterface any
 	var testChan chan int
 	var testFunc func()
 	var testComplex64 complex64
@@ -164,10 +164,10 @@ func TestUnmarshal(t *testing.T) {
 	}
 
 	tests := []struct {
-		in      []byte      // input bytes
-		wantVal interface{} // expected value
-		wantN   int         // expected number of bytes read
-		err     error       // expected error
+		in      []byte // input bytes
+		wantVal any    // expected value
+		wantN   int    // expected number of bytes read
+		err     error  // expected error
 	}{
 		// int8 - XDR Integer
 		{[]byte{0x00, 0x00, 0x00, 0x00}, int8(0), 4, nil},
@@ -381,7 +381,7 @@ func TestUnmarshal(t *testing.T) {
 
 		testName := fmt.Sprintf("Unmarshal #%d", i)
 		// Create a new pointer to the appropriate type.
-		var want interface{}
+		var want any
 		if test.wantVal != nil {
 			wvt := reflect.TypeOf(test.wantVal)
 			want = reflect.New(wvt).Interface()
@@ -452,12 +452,12 @@ func (f decodeFunc) String() string {
 // TestDecoder ensures a Decoder works as intended.
 func TestDecoder(t *testing.T) {
 	type test struct {
-		f       decodeFunc  // function to use to decode
-		in      []byte      // input bytes
-		wantVal interface{} // expected value
-		wantN   int         // expected number of bytes read
-		maxSize uint        // read limiter value
-		err     error       // expected error
+		f       decodeFunc // function to use to decode
+		in      []byte     // input bytes
+		wantVal any        // expected value
+		wantN   int        // expected number of bytes read
+		maxSize uint       // read limiter value
+		err     error      // expected error
 	}
 	tests := []test{
 		// Bool
@@ -554,7 +554,7 @@ func TestDecoder(t *testing.T) {
 	validEnums[0] = true
 	validEnums[1] = true
 
-	var rv interface{}
+	var rv any
 	var n int
 	var err error
 
@@ -694,7 +694,7 @@ func TestUnmarshalCorners(t *testing.T) {
 	// Ensure unmarshal to indirected unsettable pointer returns the
 	// expected error.
 	testName = "Unmarshal to indirected unsettable pointer"
-	ii32p := interface{}(i32p)
+	ii32p := any(i32p)
 	expectedN = 0
 	expectedErr = &UnmarshalError{ErrorCode: ErrNotSettable}
 	n, err = Unmarshal(bytes.NewReader(buf), &ii32p)
@@ -704,7 +704,7 @@ func TestUnmarshalCorners(t *testing.T) {
 	// expected error.
 	testName = "Unmarshal to embedded unsettable interface value"
 	var i32 int32
-	ii32 := interface{}(i32)
+	ii32 := any(i32)
 	expectedN = 0
 	expectedErr = &UnmarshalError{ErrorCode: ErrNotSettable}
 	n, err = Unmarshal(bytes.NewReader(buf), &ii32)
@@ -712,11 +712,11 @@ func TestUnmarshalCorners(t *testing.T) {
 
 	// Ensure unmarshal to embedded interface value works properly.
 	testName = "Unmarshal to embedded interface value"
-	ii32vp := interface{}(&i32)
+	ii32vp := any(&i32)
 	expectedN = 4
 	expectedErr = nil
 	ii32vpr := int32(1)
-	expectedVal := interface{}(&ii32vpr)
+	expectedVal := any(&ii32vpr)
 	n, err = Unmarshal(bytes.NewReader(buf), &ii32vp)
 	if testExpectedURet(t, testName, n, expectedN, err, expectedErr) {
 		if !reflect.DeepEqual(ii32vp, expectedVal) {
